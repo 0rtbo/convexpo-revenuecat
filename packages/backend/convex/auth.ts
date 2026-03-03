@@ -71,3 +71,23 @@ export const getCurrentUser = query({
 		return await authComponent.safeGetAuthUser(ctx);
 	},
 });
+
+/**
+ * Get the authenticated user or return null if not authenticated.
+ * Use this for queries that should work for both authenticated and guest users.
+ */
+export async function getAuthUser(ctx: GenericCtx<DataModel>) {
+	return await authComponent.safeGetAuthUser(ctx);
+}
+
+/**
+ * Get the authenticated user or throw an error if not authenticated.
+ * Use this for queries/mutations that require authentication.
+ */
+export async function requireAuth(ctx: GenericCtx<DataModel>) {
+	const user = await authComponent.safeGetAuthUser(ctx);
+	if (!user) {
+		throw new Error("Authentication required");
+	}
+	return user;
+}

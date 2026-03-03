@@ -3,16 +3,25 @@ import { useState } from "react";
 import { Alert, ScrollView } from "react-native";
 
 import { Icon } from "@/components/icon";
+import { SubscriptionStatusCard } from "@/components/subscription-status-card";
 import { useUser } from "@/contexts/user-context";
 import { authClient } from "@/lib/auth-client";
+import { useRevenueCat } from "@/providers/RevenueCatProvider";
 
 export default function SettingsRoute() {
 	const { user } = useUser();
 	const [isDeletingUser, setIsDeletingUser] = useState(false);
+	const { logOutUser } = useRevenueCat();
 
 	if (!user) return null;
 
 	const handleDeleteUser = async () => {
+		try {
+			await logOutUser();
+		} catch (error) {
+			console.warn("[RevenueCat] Failed to log out before delete:", error);
+		}
+
 		await authClient.deleteUser(
 			{},
 			{
@@ -42,6 +51,9 @@ export default function SettingsRoute() {
 					<Card.Description>{user.email}</Card.Description>
 				</Card.Body>
 			</Card>
+
+			{/* Subscription Status - Real-time updates from Convex! */}
+			<SubscriptionStatusCard />
 
 			{/* Delete User */}
 			<Button

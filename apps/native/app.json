@@ -1,9 +1,9 @@
 {
 	"expo": {
-		"name": "My App",
-		"slug": "myapp",
+		"name": "My RevenueCat App",
+		"slug": "myrevapp",
 		"version": "1.0.0",
-		"scheme": "myapp",
+		"scheme": "myrevapp",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "automatic",
@@ -34,7 +34,7 @@
 			"reactCompiler": true
 		},
 		"ios": {
-			"bundleIdentifier": "com.example.myapp",
+			"bundleIdentifier": "com.example.myrevapp",
 			"infoPlist": {
 				"ITSAppUsesNonExemptEncryption": false
 			}
@@ -44,7 +44,7 @@
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.example.myapp"
+			"package": "com.example.myrevapp"
 		}
 	}
 }

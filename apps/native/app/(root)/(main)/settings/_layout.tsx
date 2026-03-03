@@ -5,6 +5,7 @@ import { Alert, Pressable, Text } from "react-native";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 import { authClient } from "@/lib/auth-client";
+import { useRevenueCat } from "@/providers/RevenueCatProvider";
 
 export default function SettingsLayout() {
 	const { standard } = useNavigationOptions();
@@ -26,8 +27,15 @@ export default function SettingsLayout() {
 
 const SignOutButton = () => {
 	const [isSigningOut, setIsSigningOut] = useState(false);
+	const { logOutUser } = useRevenueCat();
 
 	const handleSignOut = async () => {
+		try {
+			await logOutUser();
+		} catch (error) {
+			console.warn("[RevenueCat] Failed to log out before sign out:", error);
+		}
+
 		await authClient.signOut(
 			{},
 			{

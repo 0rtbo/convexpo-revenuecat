@@ -10,6 +10,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { UserProvider } from "@/contexts/user-context";
 import { authClient } from "@/lib/auth-client";
+import { RevenueCatProvider } from "@/providers/RevenueCatProvider";
 import SplashScreenProvider from "@/providers/SplashScreenProvider";
 
 const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
@@ -25,9 +26,11 @@ export default function Layout() {
 					<HeroUINativeProvider>
 						<ConvexBetterAuthProvider client={convex} authClient={authClient}>
 							<UserProvider>
-								<SplashScreenProvider>
-									<Slot />
-								</SplashScreenProvider>
+								<RevenueCatProvider>
+									<SplashScreenProvider>
+										<Slot />
+									</SplashScreenProvider>
+								</RevenueCatProvider>
 							</UserProvider>
 						</ConvexBetterAuthProvider>
 					</HeroUINativeProvider>

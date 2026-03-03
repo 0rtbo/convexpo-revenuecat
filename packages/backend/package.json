@@ -21,6 +21,7 @@
 		"@convex-dev/resend": "^0.2.3",
 		"better-auth": "catalog:",
 		"convex": "catalog:",
+		"convex-revenuecat": "^0.1.10",
 		"dotenv": "catalog:",
 		"zod": "catalog:"
 	},
