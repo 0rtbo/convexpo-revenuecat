@@ -16,7 +16,6 @@ import type * as _lib_resend_sendEmails from "../_lib/resend/sendEmails.js";
 import type * as auth from "../auth.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
-import type * as privateData from "../privateData.js";
 import type * as revenuecat from "../revenuecat.js";
 import type * as subscriptions from "../subscriptions.js";
 
@@ -35,7 +34,6 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   healthCheck: typeof healthCheck;
   http: typeof http;
-  privateData: typeof privateData;
   revenuecat: typeof revenuecat;
   subscriptions: typeof subscriptions;
 }>;

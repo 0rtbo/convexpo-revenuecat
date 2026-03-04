@@ -33,7 +33,7 @@ export function SubscriptionStatusCard() {
 	// Query subscription status from Convex backend
 	// This query is REACTIVE - it automatically updates when webhooks arrive!
 	// SECURITY: No userId needed - automatically uses authenticated user
-	const hasPremium = useQuery(api.subscriptions.hasPremium, {});
+	const hasPremium = useQuery(api.subscriptions.hasPremium);
 
 	// Get detailed subscription status with minimal data
 	const subscriptionStatus = useQuery(
@@ -112,7 +112,7 @@ export function SubscriptionStatusCard() {
 	// Loading state (undefined means query is still loading)
 	if (hasPremium === undefined) {
 		return (
-			<Card variant="secondary">
+			<Card variant="secondary" className="shadow-none">
 				<Card.Header>
 					<Card.Title>Subscription Status</Card.Title>
 					<Card.Description>Loading subscription info...</Card.Description>
@@ -136,7 +136,7 @@ export function SubscriptionStatusCard() {
 		const isInGracePeriod = subscription.isInGracePeriod;
 
 		return (
-			<Card variant="secondary">
+			<Card variant="secondary" className="shadow-none">
 				<Card.Header>
 					<View className="flex-row items-center justify-between">
 						<Card.Title>Subscription Status</Card.Title>
@@ -206,7 +206,7 @@ export function SubscriptionStatusCard() {
 	// No premium subscription
 	return (
 		<View className="gap-4">
-			<Card variant="secondary">
+			<Card variant="secondary" className="shadow-none">
 				<Card.Header>
 					<View className="flex-row items-center justify-between">
 						<Card.Title>Subscription Status</Card.Title>
@@ -217,41 +217,14 @@ export function SubscriptionStatusCard() {
 						</View>
 					</View>
 				</Card.Header>
-				<Card.Body className="gap-3">
+				<Card.Body className="gap-1">
 					<View className="flex-row items-start gap-2">
-						<Icon
-							name="information-circle"
-							size={18}
-							className="text-primary"
-						/>
-						<View className="flex-1">
-							<Card.Description>
-								You're currently using the free plan. Upgrade to Premium to
-								unlock exclusive features!
-							</Card.Description>
-						</View>
-					</View>
-
-					{/* Benefits */}
-					<View className="mt-2 gap-2">
-						<View className="flex-row items-center gap-2">
-							<Icon name="checkmark" size={16} className="text-success" />
-							<Card.Description className="text-xs">
-								Unlimited access to all features
-							</Card.Description>
-						</View>
-						<View className="flex-row items-center gap-2">
-							<Icon name="checkmark" size={16} className="text-success" />
-							<Card.Description className="text-xs">
-								Priority support
-							</Card.Description>
-						</View>
-						<View className="flex-row items-center gap-2">
-							<Icon name="checkmark" size={16} className="text-success" />
-							<Card.Description className="text-xs">
-								Ad-free experience
-							</Card.Description>
-						</View>
+						{/*<View className="flex-1">*/}
+						<Card.Description>
+							You're currently using the free plan. Upgrade to Premium to unlock
+							exclusive features!
+						</Card.Description>
+						{/*</View>*/}
 					</View>
 
 					{/* Upgrade Button - Shows when no packages loaded yet */}

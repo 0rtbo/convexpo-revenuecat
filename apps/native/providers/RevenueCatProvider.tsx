@@ -31,8 +31,6 @@ import {
 type UserAttributes = {
 	email?: string;
 	displayName?: string;
-	profileId?: string;
-	userId?: string;
 };
 
 export type RevenueCatContextValue = {
@@ -81,14 +79,13 @@ function logInitSkip(reason: RevenueCatInitFailureReason): void {
 }
 
 export function RevenueCatProvider({ children }: RevenueCatProviderProps) {
+	const { user, isLoading: isLoadingUser } = useUser();
 	const [isConfigured, setIsConfigured] = useState(false);
 	const [isPro, setIsPro] = useState(false);
-	const { user, isLoading: isLoadingUser } = useUser();
 	const lastSyncedUserIdRef = useRef<string | null>(null);
 
 	const refreshEntitlement = useCallback(async (): Promise<boolean> => {
 		if (!isConfigured) return false;
-
 		try {
 			const nextIsPro = await refreshProEntitlement();
 			setIsPro(nextIsPro);
@@ -297,7 +294,6 @@ export function RevenueCatProvider({ children }: RevenueCatProviderProps) {
 				return setUserAttributes({
 					email: user.email ?? undefined,
 					displayName: user.name ?? undefined,
-					userId: revenueCatUserId,
 				});
 			})
 			.catch((error) => {

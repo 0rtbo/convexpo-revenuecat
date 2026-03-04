@@ -10,6 +10,7 @@ import { useRevenueCat } from "@/providers/RevenueCatProvider";
 
 export default function SettingsRoute() {
 	const { user } = useUser();
+
 	const [isDeletingUser, setIsDeletingUser] = useState(false);
 	const { logOutUser } = useRevenueCat();
 
@@ -45,7 +46,7 @@ export default function SettingsRoute() {
 			contentContainerClassName="flex-grow px-4 py-2 gap-4"
 		>
 			{/* User Info */}
-			<Card variant="secondary">
+			<Card variant="secondary" className="shadow-none">
 				<Card.Body>
 					<Card.Title>{user.name}</Card.Title>
 					<Card.Description>{user.email}</Card.Description>
@@ -57,8 +58,8 @@ export default function SettingsRoute() {
 
 			{/* Delete User */}
 			<Button
-				variant="tertiary"
 				size="sm"
+				variant="outline"
 				className="self-center"
 				isDisabled={isDeletingUser}
 				onPress={() => {
@@ -72,9 +73,8 @@ export default function SettingsRoute() {
 					);
 				}}
 			>
-				<Icon name="trash-bin" size={18} className="text-foreground" />
 				<Button.Label>
-					{isDeletingUser ? "Deleting..." : "Delete User"}
+					{isDeletingUser ? "Deleting" : "Delete User"}
 				</Button.Label>
 			</Button>
 		</ScrollView>

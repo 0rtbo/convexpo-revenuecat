@@ -195,26 +195,12 @@ export async function logOutUser(): Promise<void> {
 export async function setUserAttributes(attributes: {
 	email?: string;
 	displayName?: string;
-	profileId?: string;
-	userId?: string;
 }): Promise<void> {
 	if (attributes.email) {
 		await Purchases.setEmail(attributes.email);
 	}
 	if (attributes.displayName) {
 		await Purchases.setDisplayName(attributes.displayName);
-	}
-
-	const customAttributes: Record<string, string> = {};
-	if (attributes.profileId) {
-		customAttributes.instantProfileId = attributes.profileId;
-	}
-	if (attributes.userId) {
-		customAttributes.instantUserId = attributes.userId;
-	}
-
-	if (Object.keys(customAttributes).length > 0) {
-		await Purchases.setAttributes(customAttributes);
 	}
 }
 

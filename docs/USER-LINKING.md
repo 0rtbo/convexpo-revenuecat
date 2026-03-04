@@ -67,11 +67,10 @@ useEffect(() => {
     console.warn("[RevenueCat] Auth sync identify failed:", error);
   });
 
-  // Set user attributes
+  // Set user attributes for dashboard
   setUserAttributes({
     email: user.email ?? undefined,
     displayName: user.name ?? undefined,
-    userId: revenueCatUserId,
   });
 }, [isConfigured, isLoadingUser, user?._id, user?.email, user?.name]);
 ```
