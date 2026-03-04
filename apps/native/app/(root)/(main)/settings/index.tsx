@@ -1,8 +1,6 @@
 import { Button, Card } from "heroui-native";
 import { useState } from "react";
 import { Alert, ScrollView } from "react-native";
-
-import { Icon } from "@/components/icon";
 import { SubscriptionStatusCard } from "@/components/subscription-status-card";
 import { useUser } from "@/contexts/user-context";
 import { authClient } from "@/lib/auth-client";
@@ -10,9 +8,9 @@ import { useRevenueCat } from "@/providers/RevenueCatProvider";
 
 export default function SettingsRoute() {
 	const { user } = useUser();
+	const { logOutUser } = useRevenueCat();
 
 	const [isDeletingUser, setIsDeletingUser] = useState(false);
-	const { logOutUser } = useRevenueCat();
 
 	if (!user) return null;
 
@@ -46,7 +44,7 @@ export default function SettingsRoute() {
 			contentContainerClassName="flex-grow px-4 py-2 gap-4"
 		>
 			{/* User Info */}
-			<Card variant="secondary" className="shadow-none">
+			<Card variant="secondary">
 				<Card.Body>
 					<Card.Title>{user.name}</Card.Title>
 					<Card.Description>{user.email}</Card.Description>
@@ -59,7 +57,7 @@ export default function SettingsRoute() {
 			{/* Delete User */}
 			<Button
 				size="sm"
-				variant="outline"
+				variant="secondary"
 				className="self-center"
 				isDisabled={isDeletingUser}
 				onPress={() => {
@@ -68,7 +66,11 @@ export default function SettingsRoute() {
 						"Are you sure you want to delete your account?",
 						[
 							{ text: "Cancel", style: "cancel" },
-							{ text: "Delete", onPress: handleDeleteUser },
+							{
+								text: "Delete",
+								onPress: handleDeleteUser,
+								style: "destructive",
+							},
 						],
 					);
 				}}

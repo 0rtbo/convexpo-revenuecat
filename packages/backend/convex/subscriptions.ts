@@ -79,6 +79,10 @@ export const hasEntitlement = query({
 });
 
 /**
+ * BRIAN NOTE what ist he acutla differnce between had entitlemnt and the get acgive subsctiption and c
+ * can it be the same one query instead of two?
+ */
+/**
  * Get subscription status for the authenticated user.
  *
  * SECURITY: Only returns minimal data for current authenticated user.

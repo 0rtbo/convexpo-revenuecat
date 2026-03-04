@@ -88,14 +88,14 @@ Example output:
 Add the token to your Convex deployment:
 
 ```bash
-npx convex env set REVENUECAT_WEBHOOK_AUTH "your-generated-token-here"
+npx convex env set REVENUECAT_WEBHOOK_AUTH <your-token>
 ```
 
 For **local development**, add to `.env.local`:
 
 ```bash
 # .env.local or packages/backend/.env.local
-REVENUECAT_WEBHOOK_AUTH=your-generated-token-here
+REVENUECAT_WEBHOOK_AUTH=<your-token>
 ```
 
 ### Step 3: Deploy Backend

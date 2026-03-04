@@ -3,7 +3,7 @@ import { env } from "@app/env/native";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import { ConvexReactClient } from "convex/react";
 import { Slot } from "expo-router";
-import { HeroUINativeProvider } from "heroui-native";
+import { type HeroUINativeConfig, HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
@@ -17,13 +17,20 @@ const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
 	unsavedChangesWarning: false,
 });
 
+const config: HeroUINativeConfig = {
+	devInfo: {
+		// Disable styling principles information message
+		stylingPrinciples: false,
+	},
+};
+
 /* ------------------------------- root layout ------------------------------ */
 export default function Layout() {
 	return (
 		<GestureHandlerRootView className="flex-1">
 			<KeyboardProvider>
 				<AppThemeProvider>
-					<HeroUINativeProvider>
+					<HeroUINativeProvider config={config}>
 						<ConvexBetterAuthProvider client={convex} authClient={authClient}>
 							<UserProvider>
 								<RevenueCatProvider>

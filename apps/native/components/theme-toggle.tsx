@@ -10,13 +10,13 @@ export function ThemeToggle() {
 
 	return (
 		<Pressable
+			className="p-1"
 			onPress={() => {
 				if (Platform.OS === "ios") {
 					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 				}
 				toggleTheme();
 			}}
-			className="px-2.5"
 		>
 			{isLight ? (
 				<Animated.View key="moon" entering={ZoomIn} exiting={FadeOut}>

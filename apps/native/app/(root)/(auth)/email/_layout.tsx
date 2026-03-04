@@ -47,8 +47,8 @@ export default function EmailLayout() {
 const CloseButton = () => {
 	return (
 		<Link href=".." asChild>
-			<Pressable className="justify-center p-2" hitSlop={24}>
-				<Icon name="close" size={22} className="text-foreground" />
+			<Pressable className="justify-center p-1" hitSlop={24}>
+				<Icon name="close" size={24} className="text-foreground" />
 			</Pressable>
 		</Link>
 	);
@@ -57,8 +57,8 @@ const CloseButton = () => {
 const SignUpButton = () => {
 	return (
 		<Link href="/(root)/(auth)/email/signup" asChild>
-			<Pressable className="p-2" hitSlop={24}>
-				<Text className="text-foreground">Sign Up</Text>
+			<Pressable className="px-3 py-2" hitSlop={24}>
+				<Text className="font-semibold text-foreground">Sign Up</Text>
 			</Pressable>
 		</Link>
 	);

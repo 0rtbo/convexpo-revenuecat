@@ -1,7 +1,8 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, Pressable, Text } from "react-native";
 
+import { Icon } from "@/components/icon";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useNavigationOptions } from "@/hooks/useNavigationOptions";
 import { authClient } from "@/lib/auth-client";
@@ -21,9 +22,28 @@ export default function SettingsLayout() {
 					headerRight: () => <SignOutButton />,
 				}}
 			/>
+			<Stack.Screen
+				name="upgrade"
+				options={{
+					title: "Upgrade",
+					presentation: "formSheet",
+					sheetGrabberVisible: true,
+					headerLeft: () => <CloseButton />,
+				}}
+			/>
 		</Stack>
 	);
 }
+
+const CloseButton = () => {
+	const router = useRouter();
+
+	return (
+		<Pressable className="justify-center p-1" onPress={() => router.back()}>
+			<Icon name="close" size={24} className="text-foreground" />
+		</Pressable>
+	);
+};
 
 const SignOutButton = () => {
 	const [isSigningOut, setIsSigningOut] = useState(false);
@@ -55,7 +75,7 @@ const SignOutButton = () => {
 
 	return (
 		<Pressable
-			className="justify-center px-3"
+			className="justify-center px-3 py-2"
 			disabled={isSigningOut}
 			onPress={() => {
 				Alert.alert("Sign Out", "Are you sure you want to sign out?", [
@@ -64,7 +84,7 @@ const SignOutButton = () => {
 				]);
 			}}
 		>
-			<Text className="text-foreground">Sign Out</Text>
+			<Text className="font-semibold text-foreground">Sign Out</Text>
 		</Pressable>
 	);
 };

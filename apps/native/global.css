@@ -29,6 +29,11 @@
 		/* --success: oklch(0.73 0.19 151); */
 		/* --warning: oklch(0.78 0.16 72); */
 		/* --danger: oklch(0.65 0.23 26); */
+
+		/* Shadows - disabled for flat look */
+		--surface-shadow: 0 0 0 0 transparent;
+		--overlay-shadow: 0 0 0 0 transparent;
+		--field-shadow: 0 0 0 0 transparent;
 	}
 
 	@variant dark {
