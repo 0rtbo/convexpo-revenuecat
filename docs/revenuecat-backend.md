@@ -329,16 +329,24 @@ Use `getSubscriptionsInGracePeriod()` to prompt payment method update.
 
 **RevenueCat Dashboard:**
 ```
-Entitlement ID: "premium"
+Entitlement ID: "pro"
 ```
 
-**Your code:**
-```typescript
-// ✅ Correct
-hasEntitlement(ctx, { appUserId, entitlementId: 'premium' })
+**Environment variable:**
+```bash
+# Must match EXACTLY what's in RevenueCat Dashboard
+REVENUECAT_ENTITLEMENT_ID=pro
+```
 
-// ❌ Wrong - won't match!
-hasEntitlement(ctx, { appUserId, entitlementId: 'Premium' })
+**In your code (if checking non-default entitlement):**
+```typescript
+// Uses the configured default entitlement
+const hasPro = useQuery(api.subscriptions.hasPremium, {});
+
+// Or check a specific entitlement
+const hasTeam = useQuery(api.subscriptions.hasEntitlement, {
+  entitlementId: 'team_plan'  // Must match RevenueCat exactly!
+});
 ```
 
 ---

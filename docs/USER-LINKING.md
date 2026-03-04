@@ -36,8 +36,8 @@ How users are linked to their subscriptions in this app starter.
 │   → app_user_id: "kg2h8fu7c9vj8w9j8w9j8w9j8w9j8w"          │
 │                                                               │
 │   3. BACKEND QUERIES                                         │
-│   Query with same ID                                         │
-│   → api.subscriptions.hasPremium({ userId: user._id })      │
+│   Secured - uses authenticated user automatically           │
+│   → api.subscriptions.hasPremium({}) // No userId needed    │
 │                                                               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -98,28 +98,30 @@ export async function identifyUser(userId: string): Promise<boolean> {
 - Ensures subscriptions follow user across devices
 - Returns current entitlement status
 
-### 3. Backend Queries
+### 3. Backend Queries (Secured)
 
 **Location:** `packages/backend/convex/subscriptions.ts`
 
 ```typescript
 export const hasPremium = query({
-  args: {
-    userId: v.string(), // Same ID as client!
-  },
-  handler: async (ctx, args) => {
+  args: {}, // No userId needed - uses authenticated user
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+    if (!user) return false;
+    
     return await revenuecat.hasEntitlement(ctx, {
-      appUserId: args.userId, // Matches RevenueCat app_user_id
-      entitlementId: "premium",
+      appUserId: user._id, // Uses authenticated user's ID
+      entitlementId: ENTITLEMENT_ID,
     });
   },
 });
 ```
 
 **What it does:**
-- Queries Convex database using same user ID
-- Returns subscription status for the user
+- Automatically uses authenticated user's ID (no client-supplied ID)
+- Returns subscription status for the current user only
 - Reactive updates when webhooks arrive
+- Returns `false` if not authenticated
 
 ---
 
@@ -236,7 +238,7 @@ Match: true
    entitlements table: appUserId = "kg2h8fu7c9vj8w9j8w9j8w9j8w9j8w"
    ↓
 7. Query reactively updates
-   api.subscriptions.hasPremium({ userId: "kg2h8fu7c9vj8w9j8w9j8w9j8w9j8w" })
+   api.subscriptions.hasPremium({})  // Uses authenticated user automatically
    Returns: true
    ↓
 8. UI updates automatically

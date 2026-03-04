@@ -25,7 +25,8 @@
 
 import { v } from "convex/values";
 import { query } from "./_generated/server";
-import { getAuthUser, requireAuth } from "./auth";
+import { getAuthUser } from "./auth";
+// import { requireAuth } from "./auth"; // Uncomment when implementing admin queries
 import { ENTITLEMENT_ID, revenuecat } from "./revenuecat";
 
 /**
@@ -101,12 +102,15 @@ export const getSubscriptionStatus = query({
 			expiresAt: sub.expirationAtMs,
 			productId: sub.productId,
 			store: sub.store,
+			// willRenew defaults to true if not present (lifetime purchases, etc.)
 			willRenew:
 				"willRenew" in sub && typeof sub.willRenew === "boolean"
 					? sub.willRenew
 					: true,
-			isInGracePeriod:
-				"billingIssueDetectedAt" in sub && sub.billingIssueDetectedAt !== null,
+			// billingIssueDetectedAt is a timestamp when present, null/undefined when not
+			isInGracePeriod: Boolean(
+				"billingIssueDetectedAt" in sub && sub.billingIssueDetectedAt,
+			),
 		}));
 	},
 });
@@ -212,26 +216,27 @@ export const getSubscriptionsInGracePeriod = query({
 });
 
 /**
- * Check if a specific subscription is in grace period.
+ * Check if any of the authenticated user's subscriptions are in grace period.
  *
- * SECURITY: Requires authentication. Only checks subscriptions owned by authenticated user.
+ * SECURITY: Only checks subscriptions owned by authenticated user.
+ * Use this instead of checking by transaction ID to ensure ownership.
  *
- * @param originalTransactionId - The original transaction ID from the store
- * @returns `true` if subscription is in grace period, `false` otherwise
+ * @returns `true` if any subscription is in grace period, `false` otherwise
  */
-export const isInGracePeriod = query({
-	args: {
-		originalTransactionId: v.string(),
-	},
-	handler: async (ctx, args) => {
+export const hasSubscriptionInGracePeriod = query({
+	args: {},
+	handler: async (ctx) => {
 		const user = await getAuthUser(ctx);
 		if (!user) return false;
 
-		// TODO: Verify the transaction belongs to the authenticated user
-		// For now, this is a simple check without ownership verification
-		return await revenuecat.isInGracePeriod(ctx, {
-			originalTransactionId: args.originalTransactionId,
-		});
+		const gracePeriodSubs = await revenuecat.getSubscriptionsInGracePeriod(
+			ctx,
+			{
+				appUserId: user._id,
+			},
+		);
+
+		return gracePeriodSubs.length > 0;
 	},
 });
 
@@ -300,53 +305,56 @@ export const getExperiments = query({
 });
 
 // ============================================================================
-// ADMIN QUERIES - These queries should only be accessible to administrators
-// TODO: Add admin role checking when you implement roles
+// ADMIN QUERIES - Commented out until role-based access is implemented
+// These queries expose data across all users and should only be accessible
+// to administrators. Uncomment and add proper admin checking when ready.
 // ============================================================================
 
-/**
- * Get a transfer event by ID.
- *
- * SECURITY: Requires authentication. Should be admin-only in production.
- *
- * @param eventId - The transfer event ID
- * @returns Transfer event data or null
- */
-export const getTransfer = query({
-	args: {
-		eventId: v.string(),
-	},
-	handler: async (ctx, args) => {
-		await requireAuth(ctx); // Ensure user is authenticated
-		// TODO: Add admin check: if (!isAdmin(user)) throw new Error("Admin access required");
+// /**
+//  * Get a transfer event by ID.
+//  *
+//  * SECURITY: Should be admin-only in production.
+//  *
+//  * @param eventId - The transfer event ID
+//  * @returns Transfer event data or null
+//  */
+// export const getTransfer = query({
+// 	args: {
+// 		eventId: v.string(),
+// 	},
+// 	handler: async (ctx, args) => {
+// 		const user = await requireAuth(ctx);
+// 		// TODO: Add admin check
+// 		// if (!isAdmin(user)) throw new Error("Admin access required");
+//
+// 		return await revenuecat.getTransfer(ctx, {
+// 			eventId: args.eventId,
+// 		});
+// 	},
+// });
 
-		return await revenuecat.getTransfer(ctx, {
-			eventId: args.eventId,
-		});
-	},
-});
-
-/**
- * Get recent transfer events.
- *
- * SECURITY: Requires authentication. Should be admin-only in production.
- *
- * @param limit - Maximum number of transfers to return (default: 100)
- * @returns Array of transfer events
- */
-export const getTransfers = query({
-	args: {
-		limit: v.optional(v.number()),
-	},
-	handler: async (ctx, args) => {
-		await requireAuth(ctx); // Ensure user is authenticated
-		// TODO: Add admin check: if (!isAdmin(user)) throw new Error("Admin access required");
-
-		return await revenuecat.getTransfers(ctx, {
-			limit: args.limit,
-		});
-	},
-});
+// /**
+//  * Get recent transfer events.
+//  *
+//  * SECURITY: Should be admin-only in production.
+//  *
+//  * @param limit - Maximum number of transfers to return (default: 100)
+//  * @returns Array of transfer events
+//  */
+// export const getTransfers = query({
+// 	args: {
+// 		limit: v.optional(v.number()),
+// 	},
+// 	handler: async (ctx, args) => {
+// 		const user = await requireAuth(ctx);
+// 		// TODO: Add admin check
+// 		// if (!isAdmin(user)) throw new Error("Admin access required");
+//
+// 		return await revenuecat.getTransfers(ctx, {
+// 			limit: args.limit,
+// 		});
+// 	},
+// });
 
 /**
  * Get all invoices for the authenticated user.
@@ -368,27 +376,31 @@ export const getInvoices = query({
 	},
 });
 
-/**
- * Get an invoice by ID.
- *
- * SECURITY: Requires authentication. Should verify invoice ownership in production.
- *
- * @param invoiceId - The invoice ID
- * @returns Invoice data or null
- */
-export const getInvoice = query({
-	args: {
-		invoiceId: v.string(),
-	},
-	handler: async (ctx, args) => {
-		await requireAuth(ctx); // Ensure user is authenticated
-		// TODO: Verify invoice belongs to authenticated user
-
-		return await revenuecat.getInvoice(ctx, {
-			invoiceId: args.invoiceId,
-		});
-	},
-});
+// /**
+//  * Get an invoice by ID.
+//  *
+//  * SECURITY: Should verify invoice ownership before returning.
+//  * Commented out until ownership verification is implemented.
+//  *
+//  * @param invoiceId - The invoice ID
+//  * @returns Invoice data or null
+//  */
+// export const getInvoice = query({
+// 	args: {
+// 		invoiceId: v.string(),
+// 	},
+// 	handler: async (ctx, args) => {
+// 		const user = await requireAuth(ctx);
+// 		const invoice = await revenuecat.getInvoice(ctx, {
+// 			invoiceId: args.invoiceId,
+// 		});
+// 		// TODO: Verify invoice belongs to authenticated user
+// 		// if (invoice && invoice.appUserId !== user._id) {
+// 		//   return null; // Don't expose other users' invoices
+// 		// }
+// 		return invoice;
+// 	},
+// });
 
 /**
  * Get virtual currency balance for a specific currency for the authenticated user.

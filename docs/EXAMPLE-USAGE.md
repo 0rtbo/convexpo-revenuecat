@@ -97,10 +97,8 @@ Both components use Convex queries that **automatically update** when data chang
 
 ```tsx
 // This query is REACTIVE!
-const hasPremium = useQuery(
-  api.subscriptions.hasPremium,
-  user?._id ? { userId: user._id } : "skip"
-);
+// SECURITY: No userId needed - automatically uses authenticated user
+const hasPremium = useQuery(api.subscriptions.hasPremium, {});
 ```
 
 **Timeline after purchase:**
@@ -140,14 +138,10 @@ T+2-5s  Component re-renders with new data
 ```tsx
 import { useQuery } from "convex/react";
 import { api } from "@app/backend/convex/_generated/api";
-import { useUser } from "@/contexts/user-context";
 
 function PremiumFeature() {
-  const { user } = useUser();
-  const hasPremium = useQuery(
-    api.subscriptions.hasPremium,
-    user?._id ? { userId: user._id } : "skip"
-  );
+  // SECURITY: No userId needed - automatically uses authenticated user
+  const hasPremium = useQuery(api.subscriptions.hasPremium, {});
 
   // Loading state
   if (hasPremium === undefined) {
@@ -204,19 +198,14 @@ Here's a complete example showing how to gate content:
 ```tsx
 import { useQuery } from "convex/react";
 import { api } from "@app/backend/convex/_generated/api";
-import { useUser } from "@/contexts/user-context";
 import { PaywallExample } from "@/components/paywall-example";
 import { View, ScrollView } from "react-native";
 import { Card } from "heroui-native";
 
 export default function PremiumOnlyScreen() {
-  const { user } = useUser();
-  
   // Check subscription status from backend
-  const hasPremium = useQuery(
-    api.subscriptions.hasPremium,
-    user?._id ? { userId: user._id } : "skip"
-  );
+  // SECURITY: No userId needed - automatically uses authenticated user
+  const hasPremium = useQuery(api.subscriptions.hasPremium, {});
 
   // Loading state
   if (hasPremium === undefined) {
@@ -292,32 +281,29 @@ export default function PremiumOnlyScreen() {
 
 ### Changing Entitlement ID
 
-If your entitlement ID isn't "premium", update the query:
+The default entitlement ID is configured via environment variable:
+
+```bash
+# In packages/backend/.env
+REVENUECAT_ENTITLEMENT_ID=pro  # Change to your entitlement ID
+```
+
+If you need to check a specific entitlement (not the default), use `hasEntitlement`:
 
 ```tsx
-// Change "premium" to your entitlement ID
-const hasAccess = useQuery(
-  api.subscriptions.hasEntitlement,
-  user?._id ? {
-    appUserId: user._id,
-    entitlementId: "pro" // Your entitlement ID
-  } : "skip"
-);
-```
-
-Or update the default in:
-```typescript
-// packages/backend/convex/subscriptions.ts
-export const hasPremium = query({
-  args: { userId: v.string() },
-  handler: async (ctx, args) => {
-    return await revenuecat.hasEntitlement(ctx, {
-      appUserId: args.userId,
-      entitlementId: "pro", // Change this
-    });
-  },
+// Check a specific entitlement
+const hasAccess = useQuery(api.subscriptions.hasEntitlement, {
+  entitlementId: "team_plan" // Check specific entitlement
 });
 ```
+
+The backend constant is defined in:
+```typescript
+// packages/backend/convex/revenuecat.ts
+export const ENTITLEMENT_ID = process.env.REVENUECAT_ENTITLEMENT_ID || "pro";
+```
+
+**Note:** All subscription queries automatically use the authenticated user - no `userId` parameter needed!
 
 ### Styling the Components
 

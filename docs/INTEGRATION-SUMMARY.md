@@ -96,37 +96,37 @@ The component automatically creates these tables:
 
 All queries available via `api.subscriptions.*`:
 
+> **🔒 Security Note:** All queries automatically use the authenticated user's ID.
+> No `userId` or `appUserId` parameters needed - authentication is handled automatically!
+
 **Entitlement Checks:**
-- `hasEntitlement(appUserId, entitlementId)` - Check specific entitlement
-- `hasPremium(userId)` - Check "premium" entitlement (convenience)
-- `getActiveEntitlements(appUserId)` - Get all active entitlements
-- `getAllEntitlements(appUserId)` - Get all entitlements (including expired)
+- `hasEntitlement({ entitlementId? })` - Check specific entitlement (defaults to configured entitlement)
+- `hasPremium({})` - Check default entitlement (convenience)
+- `getActiveEntitlements({})` - Get all active entitlements
+- `getAllEntitlements({})` - Get all entitlements (including expired)
 
 **Subscription Management:**
-- `getActiveSubscriptions(appUserId)` - Get active subscriptions
-- `getAllSubscriptions(appUserId)` - Get all subscriptions
-- `getSubscriptionsInGracePeriod(appUserId)` - Get subscriptions with billing issues
-- `isInGracePeriod(originalTransactionId)` - Check if subscription is in grace period
+- `getActiveSubscriptions({})` - Get active subscriptions
+- `getAllSubscriptions({})` - Get all subscriptions
+- `getSubscriptionsInGracePeriod({})` - Get subscriptions with billing issues
+- `hasSubscriptionInGracePeriod({})` - Check if any subscription is in grace period
 
 **Customer Data:**
-- `getCustomer(appUserId)` - Get customer record with attributes
+- `getCustomer({})` - Get customer record with attributes
 
 **A/B Testing:**
-- `getExperiment(appUserId, experimentId)` - Get enrollment for specific experiment
-- `getExperiments(appUserId)` - Get all experiment enrollments
-
-**Transfers:**
-- `getTransfer(eventId)` - Get transfer event by ID
-- `getTransfers(limit?)` - Get recent transfers
+- `getExperiment({ experimentId })` - Get enrollment for specific experiment
+- `getExperiments({})` - Get all experiment enrollments
 
 **Billing (Web Billing):**
-- `getInvoice(invoiceId)` - Get invoice by ID
-- `getInvoices(appUserId)` - Get all invoices for user
+- `getInvoices({})` - Get all invoices for user
 
 **Virtual Currency:**
-- `getVirtualCurrencyBalance(appUserId, currencyCode)` - Get balance for currency
-- `getVirtualCurrencyBalances(appUserId)` - Get all balances
-- `getVirtualCurrencyTransactions(appUserId, currencyCode?)` - Get transaction history
+- `getVirtualCurrencyBalance({ currencyCode })` - Get balance for currency
+- `getVirtualCurrencyBalances({})` - Get all balances
+- `getVirtualCurrencyTransactions({ currencyCode? })` - Get transaction history
+
+> **Note:** Admin-only queries (`getTransfer`, `getTransfers`, `getInvoice`) are currently commented out pending role-based access implementation.
 
 ---
 

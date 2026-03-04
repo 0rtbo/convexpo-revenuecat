@@ -17,7 +17,6 @@ import { useState } from "react";
 import { Alert, View } from "react-native";
 import type { PurchasesPackage } from "react-native-purchases";
 import { Icon } from "@/components/icon";
-import { useUser } from "@/contexts/user-context";
 import { useRevenueCat } from "@/providers/RevenueCatProvider";
 
 export function PaywallExample() {

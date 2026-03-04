@@ -132,24 +132,26 @@ npx convex logs --tail
 
 ## Available Queries
 
-All queries in `api.subscriptions.*`:
+All queries in `api.subscriptions.*` automatically use the authenticated user:
 
 ```typescript
-// Check entitlement
-api.subscriptions.hasPremium({ userId })
-api.subscriptions.hasEntitlement({ appUserId, entitlementId })
+// Check entitlement (uses authenticated user automatically!)
+api.subscriptions.hasPremium({})
+api.subscriptions.hasEntitlement({ entitlementId: "pro" })
 
 // Get subscriptions
-api.subscriptions.getActiveSubscriptions({ appUserId })
+api.subscriptions.getActiveSubscriptions({})
 
 // Get entitlements
-api.subscriptions.getActiveEntitlements({ appUserId })
+api.subscriptions.getActiveEntitlements({})
 
 // Check billing issues
-api.subscriptions.getSubscriptionsInGracePeriod({ appUserId })
+api.subscriptions.getSubscriptionsInGracePeriod({})
 
-// And 13 more queries...
+// And more queries...
 ```
+
+> 🔒 **Security:** No `userId` parameter needed - all queries use the authenticated user's ID automatically, preventing users from querying other users' subscription data.
 
 See [revenuecat-backend.md](./docs/revenuecat-backend.md#available-queries) for full list.
 
