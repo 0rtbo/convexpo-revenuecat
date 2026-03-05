@@ -87,10 +87,9 @@ The guide covers:
 | Doc                                                   | Description                        |
 | ----------------------------------------------------- | ---------------------------------- |
 | [DEV-TODO.md](./docs/DEV-TODO.md)                     | Setup checklist (start here)       |
-| [revenuecat.md](./docs/revenuecat.md)                 | Client-side SDK guide              |
-| [revenuecat-backend.md](./docs/revenuecat-backend.md) | Backend API reference              |
-| [TESTING.md](./docs/TESTING.md)                       | Testing procedures                 |
-| [USER-LINKING.md](./docs/USER-LINKING.md)             | How user IDs link to subscriptions |
+| [APP-STORE-SETUP.md](./docs/APP-STORE-SETUP.md)       | iOS App Store Connect setup        |
+| [REVENUECAT-CLIENT.md](./docs/REVENUECAT-CLIENT.md)   | Client-side SDK architecture       |
+| [TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)       | Common fixes                       |
 
 
 ---
