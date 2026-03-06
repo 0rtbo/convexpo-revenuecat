@@ -97,13 +97,8 @@ export default function UpgradeScreen() {
 				contentInsetAdjustmentBehavior="always"
 				contentContainerClassName="flex-grow px-4 py-2 gap-4"
 			>
-				{/* Loading State TODO REVIESE!! */}
-				{isLoading && (
-					<>
-						<Skeleton className="h-32 w-full rounded-xl" />
-						<Skeleton className="h-32 w-full rounded-xl" />
-					</>
-				)}
+				{/* Loading State  */}
+				{isLoading && <Card className="h-32 gap-2" />}
 
 				{/* Available Packages */}
 				{!isLoading &&
