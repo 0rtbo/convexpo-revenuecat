@@ -225,10 +225,8 @@ Repeat for each subscription product.
 This links your products to the entitlement you created during initial setup — so purchases unlock access.
 
 1. Still in **Product Catalog** → **Products**
-2. Click on a product you just added
-3. Scroll to **Entitlements** section
-4. Click **Attach** and select your entitlement (e.g., `MyApp Pro`)
-5. Click **Save**
+2. On the products you just added
+3. Click **Attach** and select your entitlement (e.g., `MyApp Pro`)
 
 Repeat for each product that should unlock this entitlement.
 
