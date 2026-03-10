@@ -16,6 +16,9 @@ export default function Landing() {
 				<Text className="font-extrabold text-6xl text-foreground">
 					Convexpo
 				</Text>
+				<Text className="line-clamp-4 text-muted/50 text-xl leading-relaxed">
+					Convex + Expo + Better Auth + Hero UI + RevenueCat = 🚀
+				</Text>
 			</View>
 			{/* OAuth buttons */}
 			<View className="w-full flex-row gap-4">

@@ -10,7 +10,7 @@ export default function HomeLayout() {
 			<Stack.Screen
 				name="index"
 				options={{
-					title: "Home",
+					title: "Convexpo",
 					headerLargeTitle: true,
 				}}
 			/>

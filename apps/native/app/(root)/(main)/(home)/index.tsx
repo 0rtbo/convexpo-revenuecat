@@ -1,7 +1,7 @@
 import { api } from "@app/backend";
 import { useQuery } from "convex/react";
 import { Card } from "heroui-native";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
 function getStatusConfig(isLoading: boolean, isConnected: boolean) {
 	if (isLoading) {
@@ -37,11 +37,9 @@ export default function HomeRoute() {
 		>
 			{/* API Status */}
 			<Card variant="secondary">
-				<Card.Body className="flex-row items-center gap-3">
-					<View>
-						<Card.Title>API Status</Card.Title>
-						<Card.Description>{status.label}</Card.Description>
-					</View>
+				<Card.Body>
+					<Card.Title>API Status</Card.Title>
+					<Card.Description>{status.label}</Card.Description>
 				</Card.Body>
 			</Card>
 		</ScrollView>
