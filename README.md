@@ -1,5 +1,9 @@
 # Convexpo + RevenueCat
 
+> **Under Construction**
+> - Google Play Store setup guide coming soon
+> - Some functions may change in the future
+
 A monetization-ready app starter built on [Convexpo](https://github.com/0rtbo/convexpo).
 
 **Stack:** Convex + Better Auth + Expo (React Native) + HeroUI Native + RevenueCat

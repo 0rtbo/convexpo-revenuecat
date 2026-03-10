@@ -132,7 +132,7 @@ https://your-deployment-123.convex.site
 3. Click the **Integrations** tab
 4. Find **Webhooks** section and click **+ New**
 
-### 4.3 Fill in Webhook Details
+### 4.2 Fill in Webhook Details
 
 You'll see a form with these fields:
 
@@ -147,7 +147,7 @@ You'll see a form with these fields:
 - URL: `https://happy-animal-123.convex.site/webhooks/revenuecat`
 - Auth: `9K7xZm3pL8qR2nV6wA4yB1cD5eF0gH2iJ3kL4mN5oP6qR7sT8uV9w`
 
-### 4.4 Save the Webhook
+### 4.3 Save the Webhook
 
 Click **Save** or **Add** button at the bottom of the form.
 
@@ -220,6 +220,38 @@ npx convex env set REVENUECAT_ENTITLEMENT_ID "MyApp Pro"
 ```
 
 **✏️ ACTION:** Verify both client and backend use the same entitlement ID.
+
+### 6.4 Restart Dev Server & Test Purchase
+
+After adding your RevenueCat API keys, the dev server needs to pick up the new environment variables.
+
+**Step 1: Stop and restart the dev server**
+
+```bash
+# Stop the running dev server (Ctrl+C)
+# Then restart
+bun run dev
+```
+
+**Step 2: If purchases still don't work, clear the cache**
+
+```bash
+bun run dev --clear
+```
+
+**Step 3: If still not working, create a new build**
+
+```bash
+# iOS
+bun run build:ios
+
+# Android
+bun run build:android
+```
+
+> 💡 **Tip:** Most of the time, stopping and restarting the dev server is enough. Only create a new build if the other options don't work.
+
+**✏️ ACTION:** Test a purchase in your app to verify RevenueCat is configured correctly.
 
 ---
 
