@@ -8,6 +8,7 @@ This checklist tells you exactly what to do to get RevenueCat webhooks working w
 
 Before you start, make sure you have:
 
+- [ ] Completed [Convexpo setup](https://github.com/0rtbo/convexpo) (auth provider of your choice)
 - [ ] Convex project deployed and running
 
 **Time estimate:** 15-20 minutes
